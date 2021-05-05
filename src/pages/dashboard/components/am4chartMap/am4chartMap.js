@@ -2,23 +2,69 @@ import React, { Component } from 'react';
 
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4maps from "@amcharts/amcharts4/maps";
-import cities from './mock';
+import usaCities from './usaCities';
+import brCities from './brCities';
 import am4geodata_usaHigh from "@amcharts/amcharts4-geodata/usaHigh";
+import am4geodata_brHigh from "@amcharts/amcharts4-geodata/brazilHigh";
 
 import AnimateNumber from 'react-animated-number';
 import s from './am4chartMap.module.scss';
-  
-  class Am4chartMap extends Component {
-  
-  componentDidMount() {
-    let map = am4core.create("map", am4maps.MapChart);
+
+class Am4chartMap extends Component {
+  usaConfig(map) {
     map.geodata = am4geodata_usaHigh;
+    map.projection = new am4maps.projections.AlbersUsa();
+    map.homeZoomLevel = 1.2;
+
+    let citySeries = map.series.push(new am4maps.MapImageSeries());
+    citySeries.data = usaCities;
+    citySeries.dataFields.value = "size";
+    let city = citySeries.mapImages.template;
+    city.nonScaling = true;
+    city.propertyFields.latitude = "latitude";
+    city.propertyFields.longitude = "longitude";
+    let circle = city.createChild(am4core.Circle);
+    circle.fill = am4core.color("#C7D0FF");
+    circle.strokeWidth = 0;
+    let circleHoverState = circle.states.create("hover");
+    circleHoverState.properties.strokeWidth = 1;
+    circle.tooltipText = '{tooltip}';
+    circle.propertyFields.radius = 'size';
+  }
+
+  brConfig(map) {
+    map.geodata = am4geodata_brHigh;
+
+    let citySeries = map.series.push(new am4maps.MapImageSeries());
+    citySeries.data = brCities;
+    citySeries.dataFields.value = "size";
+    let city = citySeries.mapImages.template;
+    city.nonScaling = true;
+    city.propertyFields.latitude = "latitude";
+    city.propertyFields.longitude = "longitude";
+    let circle = city.createChild(am4core.Circle);
+    circle.fill = am4core.color("#C7D0FF");
+    circle.strokeWidth = 0;
+    let circleHoverState = circle.states.create("hover");
+    circleHoverState.properties.strokeWidth = 1;
+    circle.tooltipText = '{tooltip}';
+    circle.propertyFields.radius = 'size';
+  }
+
+  applyCountry(map) {
+    const coutriesConfig = {
+      'BR': this.brConfig,
+      'USA': this.usaConfig,
+    }
+    //TODO: get from user info
+    coutriesConfig['BR'](map);
+  }
+
+  stylizeMap(map) {
     map.percentHeight = 90;
     map.dy = 10;
-    map.projection = new am4maps.projections.AlbersUsa();
     let polygonSeries = map.series.push(new am4maps.MapPolygonSeries());
     polygonSeries.useGeodata = true;
-    map.homeZoomLevel = 1.2;
     map.zoomControl = new am4maps.ZoomControl();
     map.zoomControl.layout = 'horizontal';
     map.zoomControl.align = 'left';
@@ -49,21 +95,20 @@ import s from './am4chartMap.module.scss';
     polygonTemplate.stroke = am4core.color("#6979C9")
     let hs = polygonTemplate.states.create("hover");
     hs.properties.fill = am4core.color("#354D84");
-    let citySeries = map.series.push(new am4maps.MapImageSeries());
-    citySeries.data = cities;
-    citySeries.dataFields.value = "size";
-    let city = citySeries.mapImages.template;
-    city.nonScaling = true;
-    city.propertyFields.latitude = "latitude";
-    city.propertyFields.longitude = "longitude";
-    let circle = city.createChild(am4core.Circle);
-    circle.fill = am4core.color("#C7D0FF");
-    circle.strokeWidth = 0;
-    let circleHoverState = circle.states.create("hover");
-    circleHoverState.properties.strokeWidth = 1;
-    circle.tooltipText = '{tooltip}';
-    circle.propertyFields.radius = 'size';
-    this.map = map;
+
+    return this;
+  }
+
+  generateMap() {
+    let map = am4core.create("map", am4maps.MapChart);
+
+    this
+      .stylizeMap(map)
+      .applyCountry(map);
+  }
+
+  componentDidMount() {
+    this.generateMap()
   }
 
   componentWillUnmount() {
