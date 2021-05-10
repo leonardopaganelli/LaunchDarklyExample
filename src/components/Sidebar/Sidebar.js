@@ -38,6 +38,22 @@ class Sidebar extends React.Component {
         super(props);
 
         this.doLogout = this.doLogout.bind(this);
+        this.state = {
+            labelList: [
+                {
+                    text: "My Recent",
+                    color: "text-success"
+                },
+                {
+                    text: "Starred",
+                    color: "text-primary"
+                },
+                {
+                    text: "Background",
+                    color: "text-danger"
+                }
+            ]
+        }
     }
 
     componentDidMount() {
@@ -146,24 +162,16 @@ class Sidebar extends React.Component {
                 </h5>
                 {/* eslint-disable */}
                 <ul className={s.sidebarLabels}>
-                    <li>
-                        <a href="#">
-                            <i className="fa fa-circle text-success mr-2"/>
-                            <span className={s.labelName}>My Recent</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i className="fa fa-circle text-primary mr-2"/>
-                            <span className={s.labelName}>Starred</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i className="fa fa-circle text-danger mr-2"/>
-                            <span className={s.labelName}>Background</span>
-                        </a>
-                    </li>
+                    {
+                        this.state.labelList.map(({ text, color }) => (
+                            <li>
+                                <a href="#">
+                                    <i className={`fa fa-circle ${color} mr-2`}/>
+                                    <span className={s.labelName}>{text}</span>
+                                </a>
+                            </li>
+                        ))
+                    }
                 </ul>
                 {/* eslint-enable */}
                 <h5 className={s.navTitle}>

@@ -1,0 +1,6 @@
+{
+  "name": "maintenance",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./MaintenancePage.js"
+}

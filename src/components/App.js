@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify';
 
 /* eslint-disable */
 import ErrorPage from '../pages/error';
+import MaintenancePage from '../pages/maintance';
 /* eslint-enable */
 
 import '../styles/theme.scss';
@@ -44,6 +45,7 @@ class App extends React.PureComponent {
                     <Route path="/register" exact component={Register}/>
                     <Route path="/login" exact component={Login}/>
                     <Route path="/error" exact component={ErrorPage}/>
+                    <Route path="/maintenance" exact component={MaintenancePage}/>
                     <Route component={ErrorPage}/>
                     <Redirect from="*" to="/app/main/dashboard"/>
                 </Switch>
