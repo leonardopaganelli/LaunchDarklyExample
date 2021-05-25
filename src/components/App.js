@@ -13,36 +13,16 @@ import "../styles/theme.scss";
 import LayoutComponent from "../components/Layout";
 import Login from "../pages/login";
 import Register from "../pages/register";
-import { logoutUser } from "../actions/user";
-import { useFlags } from "launchdarkly-react-client-sdk";
-
-const PrivateRoute = ({ dispatch, component, ...rest }) => {
-  if (
-    !Login.isAuthenticated(JSON.parse(localStorage.getItem("authenticated")))
-  ) {
-    dispatch(logoutUser());
-    return <Redirect to="/login" />;
-  } else {
-    return (
-      // eslint-disable-line
-      <Route
-        {...rest}
-        render={(props) => React.createElement(component, props)}
-      />
-    );
-  }
-};
+import LaunchDarklyUserIdentifier from "./LaunchDarklyUserIdentifier";
+import PrivateRoute from "./PrivateRoute/PrivateRoute";
 
 const CloseButton = ({ closeToast }) => (
   <i onClick={closeToast} className="la la-close notifications-close" />
 );
 
 const App = ({ dispatch }) => {
-  const flags = useFlags();
-  console.log(flags);
-
   return (
-    <div>
+    <LaunchDarklyUserIdentifier>
       <ToastContainer
         autoClose={5000}
         hideProgressBar
@@ -65,7 +45,7 @@ const App = ({ dispatch }) => {
           <Redirect from="*" to="/app/main/dashboard" />
         </Switch>
       </HashRouter>
-    </div>
+    </LaunchDarklyUserIdentifier>
   );
 };
 
