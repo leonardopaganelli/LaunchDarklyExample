@@ -32,7 +32,6 @@ import BurgerIcon from "../Icons/HeaderIcons/BurgerIcon";
 import SearchIcon from "../Icons/HeaderIcons/SearchIcon";
 import ArrowIcon from "../Icons/HeaderIcons/ArrowIcon";
 
-
 import { logoutUser } from "../../actions/user";
 import {
   openSidebar,
@@ -142,12 +141,12 @@ class Header extends React.Component {
       <Navbar className={`d-print-none `}>
         <div className={s.burger}>
           <NavLink
-              onClick={this.toggleSidebar}
-              className={`d-md-none ${s.navItem} text-white`}
-              href="#"
-            >
-              <BurgerIcon className={s.headerIcon} />
-            </NavLink>
+            onClick={this.toggleSidebar}
+            className={`d-md-none ${s.navItem} text-white`}
+            href="#"
+          >
+            <BurgerIcon className={s.headerIcon} />
+          </NavLink>
         </div>
         <div className={`d-print-none ${s.root}`}>
           <UncontrolledAlert
@@ -212,13 +211,19 @@ class Header extends React.Component {
               id="basic-nav-dropdown"
               className={`${s.notificationsMenu}`}
             >
-              <DropdownToggle nav caret style={{ color: "#C1C3CF", padding: 0 }}>
+              <DropdownToggle
+                nav
+                caret
+                style={{ color: "#C1C3CF", padding: 0 }}
+              >
                 <span
                   className={`${s.avatar} rounded-circle thumb-sm float-left`}
                 >
                   <img src={avatar} alt="..." />
                 </span>
-                <span className={`small d-sm-down-none ${s.accountCheck}`}>Philip smith</span>
+                <span className={`small d-sm-down-none ${s.accountCheck}`}>
+                  {this.props.user.name}
+                </span>
                 <Badge className={`d-sm-down-none ${s.badge}`} color="danger">
                   9
                 </Badge>
@@ -236,7 +241,7 @@ class Header extends React.Component {
                 className={s.navItem}
                 href="#"
               >
-                <SearchIcon addId='header-search' className={s.headerIcon} />
+                <SearchIcon addId="header-search" className={s.headerIcon} />
               </NavLink>
             </NavItem>
             <Dropdown
@@ -245,7 +250,10 @@ class Header extends React.Component {
               isOpen={this.state.messagesOpen}
               toggle={this.toggleMessagesDropdown}
             >
-              <DropdownToggle nav className={`d-sm-down-none ${s.navItem} text-white`}>
+              <DropdownToggle
+                nav
+                className={`d-sm-down-none ${s.navItem} text-white`}
+              >
                 <MessageIcon className={s.headerIcon} />
               </DropdownToggle>
               <DropdownMenu className={`${s.dropdownMenu} ${s.messages}`}>
@@ -253,7 +261,9 @@ class Header extends React.Component {
                   <img className={s.image} src={sender1} alt="" />
                   <div className={s.details}>
                     <div>Jane Hew</div>
-                    <div className={s.text}>Hey, John! How is it going? ...</div>
+                    <div className={s.text}>
+                      Hey, John! How is it going? ...
+                    </div>
                   </div>
                 </DropdownItem>
                 <DropdownItem>
@@ -277,7 +287,11 @@ class Header extends React.Component {
                 <DropdownItem>
                   {/* eslint-disable-next-line */}
                   <a href="#" className="text-white">
-                    See all messages <ArrowIcon className={s.headerIcon} maskName="messagesArrow" />
+                    See all messages{" "}
+                    <ArrowIcon
+                      className={s.headerIcon}
+                      maskName="messagesArrow"
+                    />
                   </a>
                 </DropdownItem>
               </DropdownMenu>
@@ -290,7 +304,10 @@ class Header extends React.Component {
               toggle={this.toggleSettingsDropdown}
             >
               <DropdownToggle nav className={`${s.navItem} text-white`}>
-                <SettingsIcon addId='header-settings' className={s.headerIcon} />
+                <SettingsIcon
+                  addId="header-settings"
+                  className={s.headerIcon}
+                />
               </DropdownToggle>
               <DropdownMenu className={`${s.dropdownMenu} ${s.settings}`}>
                 <h6>Sidebar on the</h6>
@@ -358,7 +375,9 @@ class Header extends React.Component {
                   <Badge color="warning">
                     <i className="fa fa-question-circle" />
                   </Badge>
-                  <div className={s.details}>What is the best way to get ...</div>
+                  <div className={s.details}>
+                    What is the best way to get ...
+                  </div>
                 </DropdownItem>
                 <DropdownItem>
                   <Badge color="success">
@@ -372,7 +391,9 @@ class Header extends React.Component {
                   <Badge color="info">
                     <i className="fa fa-plus" />
                   </Badge>
-                  <div className={s.details}>12 new orders has arrived today</div>
+                  <div className={s.details}>
+                    12 new orders has arrived today
+                  </div>
                 </DropdownItem>
                 <DropdownItem>
                   <Badge color="danger">
@@ -385,7 +406,8 @@ class Header extends React.Component {
                 <DropdownItem>
                   {/* eslint-disable-next-line */}
                   <a href="#" className="text-white">
-                    See all tickets <ArrowIcon className={s.headerIcon} maskName="bellArrow" />
+                    See all tickets{" "}
+                    <ArrowIcon className={s.headerIcon} maskName="bellArrow" />
                   </a>
                 </DropdownItem>
               </DropdownMenu>
@@ -411,6 +433,7 @@ function mapStateToProps(store) {
     isSidebarOpened: store.navigation.sidebarOpened,
     sidebarVisibility: store.navigation.sidebarVisibility,
     sidebarPosition: store.navigation.sidebarPosition,
+    user: store.auth.user,
   };
 }
 

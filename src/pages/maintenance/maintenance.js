@@ -8,7 +8,7 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
-import s from './MaintenancePage.module.scss';
+import s from './maintenance.module.scss';
 
 class MaintenancePage extends React.Component {
   render() {

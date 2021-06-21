@@ -164,7 +164,7 @@ class Sidebar extends React.Component {
                 <ul className={s.sidebarLabels}>
                     {
                         this.state.labelList.map(({ text, color }) => (
-                            <li>
+                            <li key={text}>
                                 <a href="#">
                                     <i className={`fa fa-circle ${color} mr-2`}/>
                                     <span className={s.labelName}>{text}</span>

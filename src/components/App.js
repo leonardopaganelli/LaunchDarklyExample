@@ -6,7 +6,7 @@ import { ToastContainer } from "react-toastify";
 
 /* eslint-disable */
 import ErrorPage from "../pages/error";
-import MaintenancePage from "../pages/maintance";
+import MaintenancePage from "../pages/maintenance";
 /* eslint-enable */
 
 import "../styles/theme.scss";
@@ -15,6 +15,7 @@ import Login from "../pages/login";
 import Register from "../pages/register";
 import LaunchDarklyUserIdentifier from "./LaunchDarklyUserIdentifier";
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
+import ldOverride from "./LDOverride/LDOverride";
 
 const CloseButton = ({ closeToast }) => (
   <i onClick={closeToast} className="la la-close notifications-close" />
@@ -53,4 +54,4 @@ const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
 });
 
-export default connect(mapStateToProps)(App);
+export default ldOverride(connect(mapStateToProps)(App));
